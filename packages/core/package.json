@@ -28,5 +28,13 @@
     "jest": "^27.4.5",
     "ts-jest": "^27.1.2",
     "tsup": "^5.11.10"
+  },
+  "peerDependencies": {
+    "discordoo": "^0.9.10"
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.1.13",
+    "tiny-typed-emitter": "^2.1.0",
+    "tsyringe": "^4.6.0"
   }
 }
