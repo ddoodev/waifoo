@@ -1,5 +1,3 @@
-import { TypedEmitter } from 'tiny-typed-emitter'
-
 /**
  * ExceptionBoundary is an utility data structure which is used to handle exceptions in a better way.
  * 
@@ -35,7 +33,6 @@ export class ExceptionBoundary {
 
   async wrapAsync<T = any>(cb: () => Promise<T | undefined>): Promise<T | undefined> {
     const raise = (e: Error) => {
-      console.log('raise')
       throw e
     }
 
