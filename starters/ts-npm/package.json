@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "devDependencies": {
+    "ts-node": "^10.4.0",
+    "tsup": "^5.11.10"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts",
+    "start": "ts-node src/index.ts",
+    "production": "npm run build && node dist/index.js"
+  }
+}

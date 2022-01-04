@@ -1,0 +1,35 @@
+{
+  "private": true,
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.9.0",
+    "@typescript-eslint/parser": "^5.9.0",
+    "eslint": "^8.6.0",
+    "lerna": "^4.0.0",
+    "turbo": "^1.0.24"
+  },
+  "scripts": {
+    "preinstall": "npx only-allow npm",
+    "build": "turbo run build",
+    "test": "turbo run test",
+    "dev": "turbo run dev",
+    "lint": "eslint packages/**/*.ts",
+    "lint:fix": "npm run lint -- --fix"
+  },
+  "turbo": {
+    "baseBranch": "origin/develop",
+    "pipeline": {
+      "build": {
+        "dependsOn": [
+          "^build"
+        ],
+        "outputs": [
+          "dist/**"
+        ]
+      },
+      "test": {},
+      "dev": {
+        "cache": false
+      }
+    }
+  }
+}

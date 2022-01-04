@@ -1,0 +1,23 @@
+{
+  "name": "@waifoo/core",
+  "description": "Core for Waifoo framework",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup src/index.ts --dts",
+    "dev": "tsup src/index.ts --dts --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Discordoo/waifoo.git"
+  },
+  "homepage": "https://discordoo.xyz/",
+  "license": "MIT",
+  "author": {
+    "name": "KislBall",
+    "email": "kislball@yahoo.com"
+  },
+  "devDependencies": {
+    "tsup": "^5.11.10"
+  }
+}

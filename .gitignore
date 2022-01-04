@@ -1,0 +1,9 @@
+.env
+node_modules
+
+# those three are excluded since they may contain nasty local references
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+dist
