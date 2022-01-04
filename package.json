@@ -16,7 +16,7 @@
     "prepare": "husky install",
     "postinstall": "husky install",
     "preinstall": "npx only-allow npm",
-    "build": "npm run setup && turbo run build",
+    "build": "turbo run build",
     "test": "turbo run test",
     "dev": "turbo run dev",
     "lint": "eslint packages/**/*.ts",
