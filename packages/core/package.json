@@ -10,7 +10,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsup",
-    "dev": "tsup --watch"
+    "dev": "tsup --watch",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,9 @@
     "email": "kislball@yahoo.com"
   },
   "devDependencies": {
+    "@types/jest": "^27.4.0",
+    "jest": "^27.4.5",
+    "ts-jest": "^27.1.2",
     "tsup": "^5.11.10"
   }
 }
