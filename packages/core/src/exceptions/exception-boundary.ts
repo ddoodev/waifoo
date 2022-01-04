@@ -14,7 +14,7 @@ export class ExceptionBoundary {
     this.handlers.push(cb)
   }
 
-  private emit(e: any, raise: (e: Error) => void) {
+  private _emit(e: any, raise: (e: Error) => void) {
     this.handlers.forEach(a => a(e, raise))
   }
 
@@ -26,7 +26,7 @@ export class ExceptionBoundary {
     try {
       return cb()
     } catch (e) {
-      this.emit(e, raise)
+      this._emit(e, raise)
       return undefined
     }
   }
@@ -40,7 +40,7 @@ export class ExceptionBoundary {
       const v = await cb()
       return v
     } catch (e) {
-      this.emit(e, raise)
+      this._emit(e, raise)
       return undefined
     }
   }

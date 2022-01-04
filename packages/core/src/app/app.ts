@@ -1,8 +1,8 @@
 import { BaseContext } from './context'
 import { TypedEmitter } from 'tiny-typed-emitter'
+import { getUses } from './use'
 
-export class App extends TypedEmitter<AppEvents> {
-  apps: App[] = []
+export abstract class App extends TypedEmitter<AppEvents> {
   ready = false
   private _parent?: App
 
@@ -15,17 +15,16 @@ export class App extends TypedEmitter<AppEvents> {
     this.emit('parentAssigned', value)
   }
 
+  get isSubApp() {
+    return this._parent !== undefined
+  }
+
   setParent(app: App) {
     this.parentApp = app
   }
 
-  use(app: App, forceInitialize = false) {
-    this.apps.push(app)
-    if (this.ready || forceInitialize) {
-      this.ready ? this.emit('lateSubAppRegister', app) : this.emit('subAppRegister', app)
-      app.parentApp = this
-      return app.initialize()
-    }
+  protected _getDependencies() {
+    return getUses(this.constructor as any)
   }
 
   deriveContext(): BaseContext {
@@ -34,16 +33,23 @@ export class App extends TypedEmitter<AppEvents> {
     }
   }
 
-  async initialize(): Promise<void> {
-    const promise = this.apps.map(e => e.initialize())
-    await Promise.all(promise)
-    this.ready = true
-    this.emit('ready')
+  async initializeSubApps(): Promise<void> {
+    const apps = this._getDependencies().map(e => new e())
+    await Promise.all(apps.map(e => e.start()))
   }
+
+  async start(initSubApps = true) {
+    if (initSubApps) {
+      await this.initializeSubApps()
+    }
+    await this.load()
+  }
+
+  abstract load(): Promise<void>
 }
 
 export interface AppEvents {
-  ready: () => void
+  ready: (a: App) => void
   lateSubAppRegister: (a: App) => void
   subAppRegister: (a: App) => void
   parentAssigned: (a?: App) => void

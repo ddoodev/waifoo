@@ -4,6 +4,5 @@ export const options: Options = {
   entry: [ './src/index.ts' ],
   dts: true,
   format: [ 'esm', 'cjs' ],
-  clean: true,
-  minify: true
+  clean: true
 }
