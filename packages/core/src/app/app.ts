@@ -1,6 +1,7 @@
 import { BaseContext } from './context'
 import { TypedEmitter } from 'tiny-typed-emitter'
 import { getUses } from './use'
+import { container } from 'tsyringe'
 
 /** Basic unit of Waifoo application */
 export abstract class App extends TypedEmitter<AppEvents> {
@@ -44,7 +45,7 @@ export abstract class App extends TypedEmitter<AppEvents> {
 
   /** Initialize sub apps */
   async initializeSubApps(): Promise<void> {
-    const apps = this._getDependencies().map(e => new e())
+    const apps = this._getDependencies().map(e => container.resolve(e))
     await Promise.all(apps.map(e => e.start()))
   }
 
