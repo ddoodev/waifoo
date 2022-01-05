@@ -46,7 +46,7 @@ export abstract class App extends TypedEmitter<AppEvents> {
 
   /** Department name */
   protected _getDepartmentName() {
-    return getDepartment(this.constructor)
+    return getDepartment(this.constructor).length == 0 ? this.constructor.name : getDepartment(this.constructor)
   }
 
   /** Gets this app's context */
@@ -65,6 +65,7 @@ export abstract class App extends TypedEmitter<AppEvents> {
       return app
     })
     await Promise.all(apps.map(e => e.start()))
+    this.logger.log(`Initialized dependencies(${apps.length})`)
   }
 
   /** Start this application */
@@ -74,6 +75,7 @@ export abstract class App extends TypedEmitter<AppEvents> {
     }
     await this.load()
     this.emit('ready', this)
+    this.logger.done('Initialized!')
   }
 
   /** Load function, Ran after all subapps are loaded */
