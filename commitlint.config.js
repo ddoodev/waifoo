@@ -1,3 +1,5 @@
+const fs = require('fs')
+
 module.exports = {
   extends: [ '@commitlint/config-conventional' ],
   rules: {
@@ -17,5 +19,10 @@ module.exports = {
         'test',
       ],
     ],
+    'scope-enum': [
+      2,
+      'always',
+      fs.readdirSync('./packages') 
+    ]
   }
 }
