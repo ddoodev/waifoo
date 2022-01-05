@@ -6,5 +6,5 @@ export const UsesMetadataKey = Symbol('UsesMetadata')
 export const Uses = (...apps: DescendantOfClass<App>[]) => Reflect.metadata(UsesMetadataKey, apps)
 /** Get dependencies for specified constructor */
 export const getUses = (a: DescendantOfClass<App>) => {
-  return Reflect.getMetadata(UsesMetadataKey, a) as DescendantOfClass<App>[]
+  return (Reflect.getMetadata(UsesMetadataKey, a) ?? []) as DescendantOfClass<App>[]
 }

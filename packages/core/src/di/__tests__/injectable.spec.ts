@@ -1,4 +1,4 @@
-import { Injectable } from '../di'
+import { Injectable, container } from '../di'
 
 describe('Injectable', () => {
   class Test {
@@ -17,7 +17,7 @@ describe('Injectable', () => {
   }
 
   it('injects Test into Abc as t', () => {
-    const abc = new Abc() // since it mostly will be invoked with in the library it is ok, i guess?
+    const abc = container.resolve(Abc)
     expect(abc.method()).toBe('cool!')
   })
 })

@@ -1,7 +1,7 @@
 import { BaseContext } from './context'
 import { TypedEmitter } from 'tiny-typed-emitter'
 import { getUses } from './use'
-import { container } from 'tsyringe'
+import { container } from '../di'
 
 /** Basic unit of Waifoo application */
 export abstract class App extends TypedEmitter<AppEvents> {

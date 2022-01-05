@@ -1,4 +1,4 @@
-import { Injectable, Singleton } from '..'
+import { Injectable, Singleton, container } from '..'
 
 describe('Singleton', () => {
   it('creates injected class only once', () => {
@@ -12,11 +12,10 @@ describe('Singleton', () => {
       constructor(public t?: Test) {}
     }
 
-    const t1 = new Test2()
-    const t2 = new Test2()
+    const t1 = container.resolve(Test)
+    const t2 = container.resolve(Test2)
 
-    expect(t1.t).not.toBeFalsy()
     expect(t2.t).not.toBeFalsy()
-    expect(t1.t?.random).toBe(t2.t?.random)
+    expect(t1.random).toBe(t2.t?.random)
   })
 })
