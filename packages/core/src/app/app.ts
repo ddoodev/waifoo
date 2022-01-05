@@ -2,6 +2,7 @@ import { BaseContext } from './context'
 import { TypedEmitter } from 'tiny-typed-emitter'
 import { getUses } from './use'
 import { container } from '../di'
+import { getDepartment, Logger, logger } from '../logger'
 
 /** Basic unit of Waifoo application */
 export abstract class App extends TypedEmitter<AppEvents> {
@@ -9,6 +10,18 @@ export abstract class App extends TypedEmitter<AppEvents> {
   ready = false
   /** This app's parent */
   private _parent?: App
+  /** Base logger used */
+  private _baseLogger = logger
+
+  /** Sets logger */
+  set logger(l: Logger) {
+    this._baseLogger = l
+  }
+
+  /** logger used by this app */
+  get logger() {
+    return this._baseLogger.extend(this._getDepartmentName())
+  }
 
   /** App's parent */
   get parentApp() {
@@ -26,14 +39,14 @@ export abstract class App extends TypedEmitter<AppEvents> {
     return this._parent !== undefined
   }
 
-  /** Changes parent for this app */
-  setParent(app: App) {
-    this.parentApp = app
-  }
-
   /** Dependencies of this app specified using @Uses decorator */
   protected _getDependencies() {
     return getUses(this.constructor as any)
+  }
+
+  /** Department name */
+  protected _getDepartmentName() {
+    return getDepartment(this.constructor)
   }
 
   /** Gets this app's context */
@@ -45,7 +58,12 @@ export abstract class App extends TypedEmitter<AppEvents> {
 
   /** Initialize sub apps */
   async initializeSubApps(): Promise<void> {
-    const apps = this._getDependencies().map(e => container.resolve(e))
+    const apps = this._getDependencies().map(e => {
+      const app = container.resolve(e)
+      app.logger = this.logger
+      app.parentApp = this
+      return app
+    })
     await Promise.all(apps.map(e => e.start()))
   }
 

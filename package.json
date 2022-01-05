@@ -22,6 +22,7 @@
   },
   "turbo": {
     "baseBranch": "origin/develop",
+    "globalDependencies": ["./tsconfig.json"],
     "pipeline": {
       "build": {
         "dependsOn": [
