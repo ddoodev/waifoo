@@ -1,0 +1,10 @@
+# Ignore everything because plugins can create their own files
+*
+# But not these files/directories
+!.gitignore
+!misc.xml
+!modules.xml
+!vcs.xml
+!waifoo.iml
+/codeStyles/
+/inspectionProfiles/

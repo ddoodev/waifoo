@@ -1,5 +1,6 @@
 .env
 node_modules
+package.json.lerna_backup
 
 # those three are excluded since they may contain nasty local references
 package-lock.json
