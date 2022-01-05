@@ -1,2 +1,2 @@
 import 'reflect-metadata'
-export * from './injectee'
+export * from './di'
