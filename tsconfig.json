@@ -19,7 +19,9 @@
     "noImplicitAny": false,
     "resolveJsonModule": true,
     "isolatedModules": false,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "outDir": "dist",
+    "declaration": true
   },
   "exclude": [
     "node_modules",

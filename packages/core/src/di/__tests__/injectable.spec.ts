@@ -1,13 +1,13 @@
-import { Injectee } from '..'
+import { Injectable } from '../di'
 
-describe('injectee', () => {
+describe('Injectable', () => {
   class Test {
     myCoolMethod() {
       return 'cool!'
     }
   }
 
-  @Injectee()
+  @Injectable()
   class Abc {
     constructor(private t?: Test) {}
 

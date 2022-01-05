@@ -1,4 +1,4 @@
-import { App, DescendantOfClass, DotenvConfig, resolve } from '@waifoo/core'
+import { App, DescendantOfClass, DotenvConfig, container, Singleton } from '@waifoo/core'
 import { ClientBuilder, createApp as createDdooApp, DefaultClientStack, Client } from 'discordoo'
 
 /**
@@ -14,7 +14,7 @@ export interface DiscordooClientConfig<T extends DefaultClientStack = DefaultCli
 /** Default {@link DiscordooClientConfig} */
 export const defaultDiscordooClientConfig: DiscordooClientConfig<DefaultClientStack> = {
   async token() {
-    const dotenvCfg = resolve(DotenvConfig)
+    const dotenvCfg = container.resolve(DotenvConfig)
     return await dotenvCfg.get('DISCORD_TOKEN') ?? ''
   },
   builder: b => b
@@ -43,8 +43,11 @@ export abstract class DiscordooClient<T extends DefaultClientStack = DefaultClie
 export const createDiscordooClient = 
   <T extends DefaultClientStack = DefaultClientStack>(cfg: Partial<DiscordooClientConfig<T>>): DescendantOfClass<DiscordooClient<T>> => {
     const config = { ...defaultDiscordooClientConfig, ...cfg }
-    return class extends DiscordooClient<T> {
+    @Singleton()
+    class emb extends DiscordooClient<T> {
       getToken = config.token
       customBuilder = config.builder
     }
+
+    return emb
   }

@@ -1,6 +1,2 @@
-import { autoInjectable, container } from 'tsyringe'
-
-/** Automatically inject all dependencies */
-export const Injectee = autoInjectable
-/** Resolve service from global container */
-export const resolve = container.resolve
+import 'reflect-metadata'
+export { autoInjectable as Injectable, singleton as Singleton, container } from 'tsyringe'

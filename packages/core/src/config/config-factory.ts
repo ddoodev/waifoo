@@ -1,3 +1,4 @@
+import { Singleton } from '../di'
 import { App } from '../app'
 import { DescendantOfClass } from '../utils'
 
@@ -8,7 +9,8 @@ export abstract class Config extends App {
 
 /** Create config app */
 export function createConfig(getter: (key: string) => Promise<string | undefined>, init?: () => Promise<void>): DescendantOfClass<Config> {
-  return class extends Config {
+  @Singleton()
+  class Embedded extends Config {
     async get(key: string) {
       return getter(key)
     }
@@ -17,4 +19,6 @@ export function createConfig(getter: (key: string) => Promise<string | undefined
       await init?.()
     }
   }
+
+  return Embedded
 }
