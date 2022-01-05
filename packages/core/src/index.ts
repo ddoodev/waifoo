@@ -1,3 +1,5 @@
 export * from './di'
 export * from './app'
 export * from './exceptions'
+export * from './utils'
+export * from './config'
