@@ -3,7 +3,7 @@ This guide is going to be short - here we will introduce some aspects of build s
 You should also see [main repo's contributing.md for other details](https://github.com/Discordoo/discordoo/blob/develop/CONTRIBUTING.md).
 
 ## Build system
-We use [tsup](https://tsup.egoist.sh/) as our compiler with [Turborepo](https://github.com/vercel/turborepo) and [Lerna](https://github.com/lerna/lerna) for monorepo things.
+We use [Turborepo](https://github.com/vercel/turborepo) for monorepo things.
 
 ### Getting started
 First, you should run `npm run setup`. This will bootstrap lerna packages.
