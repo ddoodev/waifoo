@@ -1,0 +1,43 @@
+{
+  "name": "@waifoo/platform-ddoo",
+  "description": "Discordoo adapter for Waifoo framework",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "exports": {
+    "import": "./dist/index.mjs",
+    "require": "./dist/index.js"
+  },
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "test": "jest --passWithNoTests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Discordoo/waifoo.git"
+  },
+  "homepage": "https://discordoo.xyz/",
+  "license": "MIT",
+  "author": {
+    "name": "KislBall",
+    "email": "kislball@yahoo.com"
+  },
+  "devDependencies": {
+    "@types/babel__generator": "^7.6.4",
+    "@types/jest": "^27.4.0",
+    "jest": "^27.4.5",
+    "ts-jest": "^27.1.2",
+    "tsup": "^5.11.10"
+  },
+  "peerDependencies": {
+    "discordoo": "^0.9.10"
+  },
+  "dependencies": {
+    "reflect-metadata": "^0.1.13",
+    "tiny-typed-emitter": "^2.1.0",
+    "tsyringe": "^4.6.0",
+    "@waifoo/core": "^0.1.0"
+  }
+}
