@@ -20,8 +20,11 @@ export const defaultDiscordooClientConfig: DiscordooClientConfig<DefaultClientSt
   builder: b => b
 }
 
+/** Abstract DiscordooClient. Responsible for creating custom Discordoo client */
 export abstract class DiscordooClient<T extends DefaultClientStack = DefaultClientStack> extends App {
+  /** Builder used */
   clientBuilder?: ClientBuilder<T>
+  /** Resulting client */
   client?: Client<T>
 
   async load() {
@@ -30,10 +33,13 @@ export abstract class DiscordooClient<T extends DefaultClientStack = DefaultClie
     await this.client.start()
   }
 
+  /** Async function which will return token */
   abstract getToken(): Promise<string>
+  /** Custom client builder */
   abstract customBuilder(b: ClientBuilder<T>): ClientBuilder<T>
 }
 
+/** Create DiscordooClient */
 export const createDiscordooClient = 
   <T extends DefaultClientStack = DefaultClientStack>(cfg: Partial<DiscordooClientConfig<T>>): DescendantOfClass<DiscordooClient<T>> => {
     const config = { ...defaultDiscordooClientConfig, ...cfg }

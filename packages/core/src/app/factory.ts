@@ -1,6 +1,7 @@
 import { DescendantOfClass } from '../utils'
 import { App } from './app'
 
+/** Create an application from App */
 export const createApp = (root: DescendantOfClass<App>) => {
   const factory = {
     app: new root(),
