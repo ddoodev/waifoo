@@ -3,6 +3,7 @@ import { TypedEmitter } from 'tiny-typed-emitter'
 import { getUses } from './use'
 import { container } from '../di'
 import { getDepartment, Logger, logger } from '../logger'
+import { getIsSilent } from '../logger/silent'
 
 /** Basic unit of Waifoo application */
 export abstract class App extends TypedEmitter<AppEvents> {
@@ -20,7 +21,7 @@ export abstract class App extends TypedEmitter<AppEvents> {
 
   /** logger used by this app */
   get logger() {
-    return this._baseLogger.extend(this._getDepartmentName())
+    return this._isSilent() ? this._baseLogger : this._baseLogger.extend(this._getDepartmentName())
   }
 
   /** App's parent */
@@ -47,6 +48,11 @@ export abstract class App extends TypedEmitter<AppEvents> {
   /** Department name */
   protected _getDepartmentName() {
     return getDepartment(this.constructor).length == 0 ? this.constructor.name : getDepartment(this.constructor)
+  }
+
+  /** If this App is silent in logger chain */
+  protected _isSilent() {
+    return getIsSilent(this.constructor)
   }
 
   /** Gets this app's context */
