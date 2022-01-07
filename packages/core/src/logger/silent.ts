@@ -1,5 +1,4 @@
-export const SilentKey = Symbol('Silent')
-/** Sets if this app should appear in chain */
-export const Silent = () => Reflect.metadata(SilentKey, true)
+export const SilentKey = Symbol('SilentKey')
+export const Silent = (...levels: string[]) => Reflect.metadata(SilentKey, levels)
 // eslint-disable-next-line @typescript-eslint/ban-types
-export const getIsSilent = (t: Function) => Reflect.getMetadata(SilentKey, t) ?? false
+export const getSilent = (a: Function) => Reflect.getMetadata(SilentKey, a) as string[] | undefined ?? []

@@ -3,7 +3,8 @@ import { TypedEmitter } from 'tiny-typed-emitter'
 import { getUses } from './use'
 import { container } from '../di'
 import { getDepartment, Logger, logger } from '../logger'
-import { getIsSilent } from '../logger/silent'
+import { getIsInvisible } from '../logger/invisible'
+import { getSilent } from '../logger/silent'
 
 /** Basic unit of Waifoo application */
 export abstract class App extends TypedEmitter<AppEvents> {
@@ -21,7 +22,7 @@ export abstract class App extends TypedEmitter<AppEvents> {
 
   /** logger used by this app */
   get logger() {
-    return this._isSilent() ? this._baseLogger : this._baseLogger.extend(this._getDepartmentName())
+    return this._baseLogger.extend(this._getDepartmentName(), this._getSilent())
   }
 
   /** App's parent */
@@ -41,18 +42,26 @@ export abstract class App extends TypedEmitter<AppEvents> {
   }
 
   /** Dependencies of this app specified using @Uses decorator */
-  protected _getDependencies() {
+  getDependencies() {
     return getUses(this.constructor as any)
   }
 
   /** Department name */
   protected _getDepartmentName() {
-    return getDepartment(this.constructor).length == 0 ? this.constructor.name : getDepartment(this.constructor)
+    if (this._isInvisible()) {
+      return ''
+    }
+    return getDepartment(this.constructor) === '' ? this.constructor.name : getDepartment(this.constructor)
   }
 
   /** If this App is silent in logger chain */
-  protected _isSilent() {
-    return getIsSilent(this.constructor)
+  protected _isInvisible() {
+    return getIsInvisible(this.constructor)
+  }
+
+  /** Silents of this app  */
+  protected _getSilent() {
+    return getSilent(this.constructor)
   }
 
   /** Gets this app's context */
@@ -64,7 +73,7 @@ export abstract class App extends TypedEmitter<AppEvents> {
 
   /** Initialize sub apps */
   async initializeSubApps(): Promise<void> {
-    const apps = this._getDependencies().map(e => {
+    const apps = this.getDependencies().map(e => {
       const app = container.resolve(e)
       app.logger = this.logger
       app.parentApp = this
@@ -80,6 +89,7 @@ export abstract class App extends TypedEmitter<AppEvents> {
       await this.initializeSubApps()
     }
     await this.load()
+    this.ready = true
     this.emit('ready', this)
     this.logger.done('Initialized!')
   }

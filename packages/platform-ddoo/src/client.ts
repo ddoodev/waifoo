@@ -1,5 +1,6 @@
 import { App, DescendantOfClass, DotenvConfig, container, Singleton, Department } from '@waifoo/core'
 import { ClientBuilder, createApp as createDdooApp, DefaultClientStack, Client } from 'discordoo'
+import { predicateAwareClassFactory } from 'tsyringe'
 
 /**
  * Configuration for {@link DiscordooClient}
@@ -33,8 +34,17 @@ export abstract class DiscordooClient<T extends DefaultClientStack = DefaultClie
   async load() {
     this.clientBuilder = createDdooApp<T>(await this.getToken())
     this.client = this.customBuilder(this.clientBuilder).build()
+
+    this.client.on('ready', async ctx => {
+      const user = await ctx.client.internals.actions.getUser('@me')
+      if (user.success) {
+        this.logger.done(`Logged in as ${user.result.username}#${user.result.discriminator}(${user.result.id})`)
+      } else {
+        this.logger.warn('Logged in, however Discord API didn\'t return desired result for user')
+      }
+    })
+
     await this.client.start()
-    this.logger.log()
   }
 
   /** Async function which will return token */

@@ -1,27 +1,46 @@
 import chalk from 'chalk'
 
 /** Creates a new logger */
-export const loggerFactory = (dep = '') => {
+export const loggerFactory = (dep = '', silent: string[] = []) => {
   const department = ` ${dep.length == 0 ? '/' : dep} `
+  const shouldLog = (name: string) => !silent.includes(name)
+
+  const d = () => chalk.gray(`${(new Date()).toISOString()}`)
 
   return {
     log(...data: string[]) {
-      console.log(`${(new Date().toISOString())} ${chalk.black.bgWhite(department)} ${chalk.bgBlue.black(' INFO ')} ${data.join(' ')}`)
+      shouldLog('info') &&
+        console.log(
+          `${chalk.bgBlue.black(' INFO ')} | ${d()} | ${chalk.black.bgWhite(department)} | ${data.join(' ')}`
+        )
     },
     warn(...data: string[]) {
-      console.log(`${(new Date().toISOString())} ${chalk.black.bgWhite(department)} ${chalk.bgYellow.black(' WARN ')} ${data.join(' ')}`)
+      shouldLog('warn') &&
+        console.log(
+          `${chalk.bgYellow.black(' WARN ')} | ${d()} | ${chalk.black.bgWhite(department)} | ${data.join(' ')}`
+        )
     },
     fail(...data: string[]) {
-      console.log(`${(new Date().toISOString())} ${chalk.black.bgWhite(department)} ${chalk.bgRed.black(' FAIL ')} ${data.join(' ')}`)
+      shouldLog('fail') &&
+        console.log(
+          `${chalk.bgRed.black(' FAIL ')} | ${d()} | ${chalk.black.bgWhite(department)} | ${data.join(' ')}`
+        )
     },
     crit(...data: string[]) {
-      console.log(`${(new Date().toISOString())} ${chalk.black.bgWhite(department)} ${chalk.bgRed.black(' CRIT ')} ${data.join(' ')}`)
+      shouldLog('crit') &&
+        console.log(
+          `${chalk.bgRed.black(' CRIT ')} | ${d()} | ${chalk.black.bgWhite(department)} | ${data.join(' ')}`
+        )
     },
     done(...data: string[]) {
-      console.log(`${(new Date().toISOString())} ${chalk.black.bgWhite(department)} ${chalk.bgGreen.black(' DONE ')} ${data.join(' ')}`)
+      shouldLog('done') &&
+        console.log(
+          `${chalk.bgGreen.black(' DONE ')} | ${(d())} | ${chalk.black.bgWhite(department)} | ${data.join(' ')}`
+        )
     },
-    extend(name: string) {
-      return loggerFactory(dep.length == 0 ? name : `${dep}/${name}`)
+    extend(name: string, silent: string[] = []) {
+      if (name.length == 0) return loggerFactory(dep, silent)
+      return loggerFactory(dep.length == 0 ? name : `${dep}/${name}`, silent)
     },
     department: dep
   }

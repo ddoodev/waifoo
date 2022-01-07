@@ -18,7 +18,8 @@
     "test": "turbo run test",
     "dev": "turbo run dev",
     "lint": "eslint packages/**/*.ts",
-    "lint:fix": "npm run lint -- --fix"
+    "lint:fix": "npm run lint -- --fix",
+    "coverage": "turbo run coverage"
   },
   "turbo": {
     "baseBranch": "origin/develop",
@@ -35,7 +36,8 @@
       "test": {},
       "dev": {
         "cache": false
-      }
+      },
+      "coverage": {}
     }
   },
   "workspaces": [
