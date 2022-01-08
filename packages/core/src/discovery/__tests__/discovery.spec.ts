@@ -4,10 +4,6 @@ import { DiscoveryApp } from '../discovery'
 import { container } from '../../di'
 
 describe('DiscoveryApp', () => {
-  it('throws error when passed to createApp', async () => {
-    await expect(createApp(DiscoveryApp).start()).rejects.toThrow()
-  })
-
   it('resolves dependencies', async () => {
     @Reflect.metadata('testing', 'yes')
     class NestedApp extends App {

@@ -15,7 +15,7 @@ export abstract class App extends TypedEmitter<AppEvents> {
   private _parent?: App
   /** Base logger used */
   private _baseLogger = logger
-  private _exceptionBoundary = new ExceptionBoundary()
+  _exceptionBoundary = new ExceptionBoundary()
 
   /** Sets logger */
   set logger(l: Logger) {
@@ -57,7 +57,7 @@ export abstract class App extends TypedEmitter<AppEvents> {
   }
 
   /** If this App is silent in logger chain */
- isInvisible() {
+  isInvisible() {
     return getIsInvisible(this.constructor)
   }
 
@@ -93,6 +93,7 @@ export abstract class App extends TypedEmitter<AppEvents> {
   async start(initSubApps = true) {
     this._exceptionBoundary.handle((e) => {
       this.logger.fail(e)
+      process.exit(-1)
     })
 
     if (initSubApps) {

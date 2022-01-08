@@ -8,5 +8,5 @@ export function getAllFuncs(toCheck) {
 
   return props.sort().filter((e, i, arr) => {
     if (e!=arr[i+1] && typeof toCheck[e] == 'function') return true
-  });
+  })
 }
