@@ -3,8 +3,9 @@ import { TypedEmitter } from 'tiny-typed-emitter'
 import { getUses } from './use'
 import { container } from '../di'
 import { getDepartment, Logger, logger } from '../logger'
-import { getIsInvisible } from '../logger/invisible'
-import { getSilent } from '../logger/silent'
+import { getIsInvisible } from '../logger'
+import { getSilent } from '../logger'
+import { ExceptionBoundary } from '../exceptions'
 
 /** Basic unit of Waifoo application */
 export abstract class App extends TypedEmitter<AppEvents> {
@@ -14,6 +15,7 @@ export abstract class App extends TypedEmitter<AppEvents> {
   private _parent?: App
   /** Base logger used */
   private _baseLogger = logger
+  private _exceptionBoundary = new ExceptionBoundary()
 
   /** Sets logger */
   set logger(l: Logger) {
@@ -22,7 +24,7 @@ export abstract class App extends TypedEmitter<AppEvents> {
 
   /** logger used by this app */
   get logger() {
-    return this._baseLogger.extend(this._getDepartmentName(), this._getSilent())
+    return this._baseLogger.extend(this.getDepartmentName(), this.getSilent())
   }
 
   /** App's parent */
@@ -47,20 +49,20 @@ export abstract class App extends TypedEmitter<AppEvents> {
   }
 
   /** Department name */
-  protected _getDepartmentName() {
-    if (this._isInvisible()) {
+  getDepartmentName() {
+    if (this.isInvisible()) {
       return ''
     }
     return getDepartment(this.constructor) === '' ? this.constructor.name : getDepartment(this.constructor)
   }
 
   /** If this App is silent in logger chain */
-  protected _isInvisible() {
+ isInvisible() {
     return getIsInvisible(this.constructor)
   }
 
   /** Silents of this app  */
-  protected _getSilent() {
+  getSilent() {
     return getSilent(this.constructor)
   }
 
@@ -79,19 +81,30 @@ export abstract class App extends TypedEmitter<AppEvents> {
       app.parentApp = this
       return app
     })
-    await Promise.all(apps.map(e => e.start()))
-    this.logger.log(`Initialized dependencies(${apps.length})`)
+
+    for (const app of apps) {
+      await app.start()
+    }
+
+    apps.length > 0 && this.logger.log(`Initialized dependencies(${apps.map(e => e.constructor.name).join(', ')})`)
   }
 
   /** Start this application */
   async start(initSubApps = true) {
+    this._exceptionBoundary.handle((e) => {
+      this.logger.fail(e)
+      process.exit(-1)
+    })
+
     if (initSubApps) {
       await this.initializeSubApps()
     }
-    await this.load()
+
+    await this._exceptionBoundary.wrapAsync(async () => {
+      await this.load()
+    })
     this.ready = true
     this.emit('ready', this)
-    this.logger.done('Initialized!')
   }
 
   /** Load function, Ran after all subapps are loaded */

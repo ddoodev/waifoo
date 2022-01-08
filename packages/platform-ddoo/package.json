@@ -33,7 +33,7 @@
     "typescript": "^4.5.4"
   },
   "peerDependencies": {
-    "discordoo": "^0.9.10",
+    "discordoo": "^0.9.11",
     "@waifoo/core": "^0.1.0"
   },
   "dependencies": {

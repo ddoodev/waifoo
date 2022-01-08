@@ -24,7 +24,7 @@ export class DiscoveryApp extends App {
 
   discover(matcher: (a: DescendantOfClass<App>) => boolean) {
     if (this.root == undefined) {
-      throw new Error('DiscoveryApp wasn\'t initialized')
+      throw new Error('DiscoveryApp wasn\'t initialized. Consider adding @Uses(DiscoveryApp) decorator to root app.')
     }
     return createMatcher(matcher)(this.root)
   }
