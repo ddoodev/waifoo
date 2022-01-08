@@ -93,7 +93,6 @@ export abstract class App extends TypedEmitter<AppEvents> {
   async start(initSubApps = true) {
     this._exceptionBoundary.handle((e) => {
       this.logger.fail(e)
-      process.exit(-1)
     })
 
     if (initSubApps) {
