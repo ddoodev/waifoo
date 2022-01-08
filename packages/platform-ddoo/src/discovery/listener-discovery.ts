@@ -1,7 +1,7 @@
 import { App, DiscoveryApp, Injectable, Singleton, container } from '@waifoo/core'
 import { getEventListener, getOn } from '../decorators/event-listener'
 import { ClientEventsHandlers } from 'discordoo'
-import { getAllFuncs } from '../utils/getAllFuncs'
+import { getAllFuncs } from '../utils/get-all-funcs'
 
 export type EventHandler = {
   name: keyof ClientEventsHandlers
