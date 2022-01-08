@@ -33,9 +33,13 @@ export abstract class DiscordooClient<T extends DefaultClientStack = DefaultClie
     this.clientBuilder = createDdooApp<T>(await this.getToken())
     this.client = this.customBuilder(this.clientBuilder).build()
 
-    this._listenerDiscovery.discoveredListeners.forEach(l => {
-      this.client!.on(l.name, l.handler as any)
-    })
+    if (!this._listenerDiscovery.ready) {
+      this.logger.warn('ListenerDiscoveryApp wasn\'t added, @EventListener() and @On() decorators won\'t work')
+    } else {
+      this._listenerDiscovery.discoveredListeners.forEach(l => {
+        this.client!.on(l.name, l.handler as any)
+      })
+    }
 
     await this.client.start()
   }
