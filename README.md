@@ -65,3 +65,8 @@ You will end up seeing this structure
 └───package.json
 ```
 Wanna more? See [Getting started]() for detais.
+
+## Acknowledgments
+Waifoo was heavily inspired by some other awesome libraries and frameworks:
+* [Necord](https://github.com/SocketSomeone/necord)
+* [NestJS](https://nestjs.com)

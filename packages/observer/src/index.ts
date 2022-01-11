@@ -1,1 +1,1 @@
-export const who = 'sample package!'
+export * from './operators'

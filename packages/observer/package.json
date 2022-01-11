@@ -31,5 +31,11 @@
   "author": {
     "name": "KislBall",
     "email": "dev@ddoo.dev"
+  },
+  "dependencies": {
+    "rxjs": "^7.5.1"
+  },
+  "peerDependencies": {
+    "discordoo": "^0.9.11"
   }
 }
