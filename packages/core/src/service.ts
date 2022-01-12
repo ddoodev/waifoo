@@ -1,8 +1,17 @@
-import { InjectionToken, instanceCachingFactory, isFactoryProvider, Provider } from 'tsyringe'
+import { 
+  InjectionToken, 
+  instanceCachingFactory, 
+  isFactoryProvider, 
+  isValueProvider, 
+  Lifecycle, 
+  Provider, 
+  RegistrationOptions
+} from 'tsyringe'
 
 export type Service<T> = {
   token: InjectionToken<T>
   noCaching?: boolean
+  options?: RegistrationOptions
 } & Provider<T>
 
 export interface ServiceLifecycle {
@@ -23,7 +32,10 @@ export const resolveService = <T>(s: ServiceResolvable<T>): Service<T> => {
   if (s instanceof Function) {
     return {
       token: s,
-      useClass: s
+      useClass: s,
+      options: {
+        lifecycle: Lifecycle.Singleton
+      }
     }
   } else {
     if (isFactoryProvider(s) && (s.noCaching ?? false) == false) {
@@ -32,6 +44,15 @@ export const resolveService = <T>(s: ServiceResolvable<T>): Service<T> => {
         useFactory: instanceCachingFactory(s.useFactory)
       }
     }
-    return s
+    if ((s.noCaching ?? false) === false && !isValueProvider(s) && !isFactoryProvider(s)) {
+      return {
+        ...s,
+        options: {
+          lifecycle: Lifecycle.Singleton
+        }
+      }
+    } else {
+      return s
+    }
   }
 }

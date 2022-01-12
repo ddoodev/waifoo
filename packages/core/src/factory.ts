@@ -1,7 +1,7 @@
 import { ServiceLifecycle } from './service'
 import { container as parentContainer } from 'tsyringe'
 import { DiContainer } from './decorators/container'
-import { DefaultLogger, getServiceDeps, Logger, resolveService, ServiceResolvable } from '.'
+import { DefaultLogger, getServiceDeps, Logger, resolveService, RootKey, ServiceResolvable } from '.'
 import { LoggerInjectKey } from './logger/decorator'
 
 /** Creates an application from a service */
@@ -14,6 +14,7 @@ export class AppFactory {
   /** Starts this app */
   async start() {
     const root = this._container.resolve(resolveService(this.rootService).token)
+    this._container.register(RootKey, { useValue: root })
     await this._initApp(root)
   }
 

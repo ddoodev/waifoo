@@ -1,4 +1,4 @@
-import { singleton, registry, autoInjectable } from 'tsyringe'
+import { singleton, registry, inject } from 'tsyringe'
 import { Service, ServiceLifecycle } from '..'
 import { resolveService, ServiceResolvable } from '../service'
 
@@ -11,10 +11,12 @@ export const service = (...reg: ServiceDependencies) => {
   
   return (target) => {
     singleton()(target)
-    autoInjectable()(target)
     registry(r)(target)
     Reflect.metadata(ServiceDepsKey, r)(target)
   }
 }
 export const getServiceDeps = (target: any): ServiceResolvable[] => 
   (Reflect.getMetadata(ServiceDepsKey, target) as Service<ServiceLifecycle>[] | undefined) ?? []
+
+export const RootKey = Symbol('Root')
+export const root = () => inject(RootKey)
