@@ -1,1 +1,3 @@
-export const who = 'sample package!'
+export * from './config'
+export * from './decorators'
+export * from './default-impl'
