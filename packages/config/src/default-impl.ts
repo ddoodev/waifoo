@@ -30,6 +30,6 @@ export class DotenvConfig extends EnvConfig implements ServiceLifecycle {
 }
 
 export const createDotenvConfig = (config: DotenvConfigOptions = {}): ServiceDependencies => [
-  { token: configInjectionKey, useValue: config },
-  createEnvConfig()
+  { token: dotenvInjectionKey, useValue: config },
+  { token: configInjectionKey, useClass: DotenvConfig }
 ]
