@@ -1,8 +1,9 @@
 import { ServiceLifecycle } from './service'
 import { container as parentContainer } from 'tsyringe'
 import { DiContainer } from './decorators/container'
-import { DefaultLogger, getServiceDeps, Logger, resolveService, RootKey, ServiceResolvable } from '.'
+import { DefaultLogger, getServiceDeps, Logger, nonProduction, resolveService, RootKey, ServiceResolvable } from '.'
 import { LoggerInjectKey } from './logger/decorator'
+import { DepartmentError } from './errors'
 
 /** Creates an application from a service */
 export class AppFactory {
@@ -13,6 +14,9 @@ export class AppFactory {
 
   /** Starts this app */
   async start() {
+    process.on('uncaughtException', this._handleError.bind(this))
+    // process.on('unhandledRejection', this._handleError.bind(this))
+
     const root = this._container.resolve(resolveService(this.rootService).token)
     this._container.register(RootKey, { useValue: root })
     await this._initApp(root)
@@ -38,6 +42,22 @@ export class AppFactory {
     deps.length !== 0 && await app.onDependenciesInitialized?.(deps.map(resolveService))
 
     await app.onInit?.()
+  }
+
+  private _handleError(e: any) {
+    const l = this._container.resolve<Logger>(LoggerInjectKey)
+
+    if (e instanceof Error) {
+      if (e instanceof DepartmentError) {
+        l._error(false, e.stack ?? '')
+      } else {
+        l._error(false, e.stack ?? '')
+      }
+    } else {
+      l._error(false, JSON.stringify(e))
+    }
+
+    nonProduction(() => { process.exit(-1) })
   }
 }
 

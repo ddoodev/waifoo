@@ -9,21 +9,15 @@ export class ListenerDiscovery implements ServiceLifecycle {
     private _discovery: DiscoveryService, 
     @container() private _container: DependencyContainer,
     @logger() private __logger: Logger
-  ) {
-    console.log('created! lis')
-  }
+  ) {}
 
-  done = false
   discoveredListeners: [any, any][] = []
 
   private get _logger() {
     return this.__logger.scope('ListenerDiscovery')
   }
 
-  aaa = Math.random()
-
   async onInit() {
-    console.log(this.aaa)
     const discovered = this._discovery.discover(
       e => Reflect.hasMetadata(EventListenerKey, e.constructor)
     ).map(e => this._container.resolve(resolveService(e).token))

@@ -5,6 +5,7 @@ export interface Logger {
   warn(...s: string[]): Logger
   done(...s: string[]): Logger
   error(...s: string[]): Logger
+  _error(t: boolean, ...s: string[]): Logger
   silent(...levels: LogLevel[]): Logger
 }
 

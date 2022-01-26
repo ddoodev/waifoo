@@ -52,10 +52,8 @@ export class DiscordooClient<T extends DefaultClientStack = DefaultClientStack> 
   }
 
   private _bindListeners() {
-    console.log(this._discovery.aaa)
     if (this.client === undefined) {
       this._logger.error('_bindListeners was called before client was created')
-      process.exit(-1)
     }
     this._discovery.discoveredListeners.map(e => {
       this.client?.on(e[0], e[1])

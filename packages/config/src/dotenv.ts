@@ -2,9 +2,9 @@ import { Config } from './config'
 import { service, ServiceLifecycle, ServiceDependencies } from '@waifoo/core'
 import { config, DotenvConfigOptions } from 'dotenv'
 import { inject } from 'tsyringe'
-import { configInjectionKey } from './decorators'
+import { ConfigInjectionKey } from './decorators'
 
-export const dotenvInjectionKey = Symbol()
+export const DotenvInjectionKey = Symbol()
 
 @service()
 export class EnvConfig implements Config {
@@ -14,13 +14,13 @@ export class EnvConfig implements Config {
 }
 
 export const createEnvConfig = (): ServiceDependencies => [ {
-  token: configInjectionKey,
+  token: ConfigInjectionKey,
   useClass: EnvConfig
 } ]
 
 @service()
 export class DotenvConfig extends EnvConfig implements ServiceLifecycle {
-  constructor(@inject(dotenvInjectionKey) private _dotenvConfig: DotenvConfigOptions) {
+  constructor(@inject(DotenvInjectionKey) private _dotenvConfig: DotenvConfigOptions) {
     super()
   }
 
@@ -30,6 +30,6 @@ export class DotenvConfig extends EnvConfig implements ServiceLifecycle {
 }
 
 export const createDotenvConfig = (config: DotenvConfigOptions = {}): ServiceDependencies => [
-  { token: dotenvInjectionKey, useValue: config },
-  { token: configInjectionKey, useClass: DotenvConfig }
+  { token: DotenvInjectionKey, useValue: config },
+  { token: ConfigInjectionKey, useClass: DotenvConfig }
 ]

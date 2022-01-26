@@ -7,7 +7,7 @@ import { resolveService, ServiceLifecycle, ServiceResolvable, root } from '..'
 @service()
 export class DiscoveryService {
   constructor(@container() private _container: DependencyContainer, @root() private _root: any) {
-    console.log('created!')
+    //
   }
 
   public discover(matcher: (a: ServiceLifecycle, c: DependencyContainer) =>  boolean) {

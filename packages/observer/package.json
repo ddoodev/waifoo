@@ -36,6 +36,7 @@
     "rxjs": "^7.5.1"
   },
   "peerDependencies": {
-    "discordoo": "^0.9.11"
+    "discordoo": "^0.9.11",
+    "@waifoo/platform-ddoo": "^0.1.0"
   }
 }

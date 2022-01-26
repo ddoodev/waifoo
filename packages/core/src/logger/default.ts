@@ -1,5 +1,6 @@
 import chalk from 'chalk'
 import { Logger, LogLevel } from '.'
+import { DepartmentError } from '../errors'
 
 export class DefaultLogger implements Logger {
   private _silent: LogLevel[] = []
@@ -28,22 +29,31 @@ export class DefaultLogger implements Logger {
   }
 
   log(...s: string[]): Logger {
-    this._base(chalk.blue('LOG '), s.join(' '))
+    this._base(chalk.blue('LOG  '), s.join(' '))
     return this 
   }
 
   warn(...s: string[]): Logger {
-    this._base(chalk.yellow('WARN'), s.join(' '), 'warn')
+    this._base(chalk.yellow('WARN '), s.join(' '), 'warn')
     return this
   }
 
   error(...s: string[]): Logger {
-    this._base(chalk.red('FAIL'), s.join(' '), 'error')
+    this._error(true, ...s)
+    return this
+  }
+
+  _error(t: boolean, ...s: string[]): Logger {
+    this._base(chalk.red('FAIL '), s.join(' '), 'error')
+    if (t) {
+      throw new DepartmentError(this._scope, s.join(' '))
+    }
+
     return this
   }
 
   done(...s: string[]): Logger {
-    this._base(chalk.green('DONE'), s.join(' '), 'log')
+    this._base(chalk.green('DONE '), s.join(' '), 'log')
     return this
   }
 }
