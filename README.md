@@ -45,7 +45,7 @@ It is fully compatible with Discordoo and updates to its newest versions first.
 ## Getting started
 ***Node x.y.z is required.***
 
-We have some starter projectы in `starters` directory as well as examples in `examples` directory.
+We have some starter projects in `starters` directory as well as examples in `examples` directory.
 
 We recommend to use Waifoo with TypeScript, however it is possible to use it with JS(see [Using Waifoo with JS]() for more info.)
 
