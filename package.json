@@ -7,7 +7,7 @@
     "@typescript-eslint/parser": "^5.9.0",
     "eslint": "^8.6.0",
     "husky": "^7.0.4",
-    "turbo": "^1.0.24"
+    "turbo": "^1.1.2"
   },
   "scripts": {
     "setup": "husky install && lerna bootstrap",
@@ -21,26 +21,8 @@
     "lint:fix": "npm run lint -- --fix",
     "coverage": "turbo run coverage"
   },
-  "turbo": {
-    "baseBranch": "origin/develop",
-    "globalDependencies": ["./tsconfig.json"],
-    "pipeline": {
-      "build": {
-        "dependsOn": [
-          "^build"
-        ],
-        "outputs": [
-          "dist"
-        ]
-      },
-      "test": {},
-      "dev": {
-        "cache": false
-      },
-      "coverage": {}
-    }
-  },
   "workspaces": [
     "packages/*"
-  ]
+  ],
+  "packageManager": "npm@8.3.0"
 }
