@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://ddoo.dev/"><img width="520" src="https://cdn.discordapp.com/attachments/531549268033404928/928347164470550618/banner_waifoo.svg" alt=""></a>
+  <a href="https://ddoo.dev/"><img width="520" src="https://cdn.ddoo.dev/github/banner_waifoo.svg" alt=""></a>
 </p>
 
 
